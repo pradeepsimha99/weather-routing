@@ -6,4 +6,5 @@ app_name = "routing"
 
 urlpatterns = [
     path("health/", views.health, name="health"),
+    path("analyze/", views.analyze, name="analyze"),
 ]
