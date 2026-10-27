@@ -1,3 +1,24 @@
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --border: #d9dee7;
+  --text: #1b2430;
+  --muted: #5b6676;
+  --primary: #0b5cad;
+  --primary-dark: #084a8c;
+  --danger: #b3261e;
+  --danger-bg: #fdecea;
+  --good-bg: #e8f5ee;
+  --good-border: #2e9e5b;
+  --warn-bg: #fff4e5;
+  --warn-border: #f08a00;
+  --radius: 10px;
+
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.45;
+}
+
 *,
 *::before,
 *::after {
@@ -6,4 +27,496 @@
 
 body {
   margin: 0;
+  background: var(--bg);
+}
+
+h1,
+h2,
+p,
+ul,
+dl,
+dd {
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.05rem;
+}
+
+:focus-visible {
+  outline: 3px solid #7fb2ec;
+  outline-offset: 2px;
+}
+
+/* ---------- Layout ---------- */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: #073b4c;
+  color: #fff;
+  padding: 14px 24px;
+}
+
+.app-header h1 {
+  font-size: 1.25rem;
+}
+
+.app-header p {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px;
+  align-items: start;
+  flex: 1;
+}
+
+.sidebar,
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.muted {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- Form ---------- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  font: inherit;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+}
+
+.field input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.field__hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.field__error {
+  font-size: 0.8rem;
+  color: var(--danger);
+}
+
+.form__credit {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.button {
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+.button:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+.alert {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: 0.92rem;
+}
+
+/* ---------- Location suggestions (combobox) ---------- */
+.combobox__control {
+  position: relative;
+}
+
+.suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.15);
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.suggestions__option {
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.suggestions__option:hover,
+.suggestions__option[aria-selected="true"] {
+  background: #e4effb;
+}
+
+.suggestions__status {
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ---------- Recommendation banner ---------- */
+.banner {
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  border: 1px solid;
+}
+
+.banner p {
+  margin-top: 4px;
+  font-size: 0.92rem;
+}
+
+.banner--good {
+  background: var(--good-bg);
+  border-color: var(--good-border);
+}
+
+.banner--warning {
+  background: var(--warn-bg);
+  border-color: var(--warn-border);
+}
+
+/* ---------- Route cards ---------- */
+.route-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.route-card {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.route-card:hover {
+  border-color: #9db8d6;
+}
+
+.route-card--selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(11, 92, 173, 0.15);
+}
+
+.route-card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.route-card__rank {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.badge {
+  background: var(--good-bg);
+  border: 1px solid var(--good-border);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+
+.stats dt {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.stats dd {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.mile-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #e8ecf2;
+}
+
+.mile-bar span {
+  display: block;
+  height: 100%;
+}
+
+.level-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  vertical-align: baseline;
+}
+
+/* ---------- Map ---------- */
+.map-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.map-wrap {
+  position: relative;
+  isolation: isolate; /* keeps Leaflet's internal z-indexes inside the map */
+  height: min(62vh, 640px);
+  min-height: 380px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #dfe6ee;
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+}
+
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.78);
+  font-weight: 600;
+}
+
+.legend {
+  position: absolute;
+  left: 12px;
+  bottom: 24px;
+  z-index: 1000;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.legend ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 4px;
+}
+
+.pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-weight: 700;
+}
+
+.pin--origin {
+  background: var(--primary);
+}
+
+.pin--destination {
+  background: #1b2430;
+}
+
+.popup {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* ---------- Heatmap slider ---------- */
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.slider__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+}
+
+.slider__value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.slider input[type="range"] {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.slider__scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.slider__note {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---------- Checkpoint table ---------- */
+.table-wrap {
+  margin-top: 10px;
+  max-height: 360px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.checkpoint-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.checkpoint-table th,
+.checkpoint-table td {
+  padding: 8px 10px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.checkpoint-table th {
+  position: sticky;
+  top: 0;
+  background: #eef2f7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Numeric columns (Mile, Wind, Rain, Snow): right-aligned in header and body alike. */
+.checkpoint-table :is(th, td):is(:nth-child(1), :nth-child(3), :nth-child(4), :nth-child(5)) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 0.78rem;
 }

@@ -1,8 +1,8 @@
 """
 Django settings for the Weather-Aware Truck Routing project.
 
-All environment-specific values are read from the .env file so that no
-secrets are stored in source control.
+All environment-specific values are read from environment variables (or a local
+.env file during development) so that no secrets are stored in source control.
 """
 
 from pathlib import Path
@@ -15,6 +15,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("DJANGO_SECRET_KEY")
 DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="localhost", cast=Csv())
+
+# Render sets this to the public hostname of the service, so it is always allowed.
+_render_hostname = config("RENDER_EXTERNAL_HOSTNAME", default="")
+if _render_hostname:
+    ALLOWED_HOSTS.append(_render_hostname)
 
 # --- Applications ------------------------------------------------------------
 # Only what we need: this app is a stateless API (no admin, no sessions).
@@ -29,6 +34,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django.middleware.gzip.GZipMiddleware",  # route data is large; JSON compresses well
     "corsheaders.middleware.CorsMiddleware",  # must be above CommonMiddleware
     "django.middleware.common.CommonMiddleware",
 ]
@@ -64,6 +70,7 @@ REST_FRAMEWORK = {
 }
 
 # --- CORS ----------------------------------------------------------------------------
+# Exact origins of the frontend, e.g. https://my-app.vercel.app (no trailing slash).
 CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="", cast=Csv())
 
 # --- External services -----------------------------------------------------------
@@ -71,6 +78,18 @@ NOMINATIM_USER_AGENT = config(
     "NOMINATIM_USER_AGENT", default="weather-routing-assessment"
 )
 EXTERNAL_API_TIMEOUT_SECONDS = 20
+
+# --- Logging -----------------------------------------------------------------------
+# Send warnings and errors to the console so the hosting platform's log viewer shows them.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "root": {"handlers": ["console"], "level": "WARNING"},
+    "loggers": {
+        "django.request": {"handlers": ["console"], "level": "ERROR", "propagate": False},
+    },
+}
 
 # --- Internationalisation ----------------------------------------------------------
 LANGUAGE_CODE = "en-us"
